@@ -9,7 +9,7 @@ import TimeZone from './examples/time-zone';
 const Application = () => {
   return (
     <main className="flex flex-col gap-8">
-      {/* <TimeZone getTodos /> */}
+      <TimeZone getTodos />
       <FizzBuzz />
       <Counter />
       <CharacterSearch />
