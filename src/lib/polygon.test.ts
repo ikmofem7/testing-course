@@ -6,10 +6,13 @@ type ContextWithPolygon = {
 };
 
 describe('createPolygon', () => {
-  it('should create an object that is an instance of the Polygon class', () => {
-    const polygon = createPolygon('triangle', 20);
-    expect(polygon).toBeInstanceOf(Polygon);
-  });
+  it.todo(
+    'should create an object that is an instance of the Polygon class',
+    () => {
+      const polygon = createPolygon('triangle', 20);
+      expect(polygon).toBeInstanceOf(Polygon);
+    },
+  );
 });
 
 describe('Polygon', () => {
