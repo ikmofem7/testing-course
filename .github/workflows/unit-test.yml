@@ -23,7 +23,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - run: npm ci
       - run: npm test -- --coverage
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         name: Archieve coverage report
         with:
           name: coverage-report
