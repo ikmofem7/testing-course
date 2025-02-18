@@ -50,12 +50,10 @@ const ObstacleCourse = () => {
   const [file, setFile] = useState<string>('');
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <form className="grid grid-cols-2 gap-4">
       <div className="flex items-center gap-2 border-2 border-purple-300 p-2">
-        <label htmlFor="deep-thought">Deep Thought</label>
         <input
           placeholder="Some text…"
-          id="deep-thought"
           value={text}
           onChange={(e) => setText(e.target.value)}
           data-testid="text-input"
@@ -192,7 +190,7 @@ const ObstacleCourse = () => {
       <div className="flex items-center justify-around border-2 border-purple-300 p-2">
         <p data-testid="file-result">{file || ''}</p>
       </div>
-    </div>
+    </form>
   );
 };
 

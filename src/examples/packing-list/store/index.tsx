@@ -1,9 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import reducer from './items-slice';
 
-export const store = configureStore({
-  reducer: { items: reducer },
-});
+const configStore = () => {
+  return configureStore({
+    reducer: { items: reducer },
+  });
+};
 
-export type ApplicationState = ReturnType<typeof store.getState>;
-export type ApplicationDispatch = typeof store.dispatch;
+const store = configStore();
+
+type ApplicationState = ReturnType<typeof store.getState>;
+type ApplicationDispatch = typeof store.dispatch;
+
+export { configStore, store, ApplicationState, ApplicationDispatch };
