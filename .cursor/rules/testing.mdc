@@ -1,0 +1,221 @@
+---
+description: 
+globs: **/*.test.ts,**/*.ts,**/*.tsx
+alwaysApply: false
+---
+---
+description: "Analyzes function complexity before generating tests"
+globs: ["**/*.test.ts", "**/*.spec.ts"]
+alwaysApply: false
+---
+
+# Interactive Testing Workflow with Approval Gates
+
+## Primary Objective
+Generate comprehensive tests through an interactive, step-by-step approval process that ensures quality and developer control.
+
+## Workflow Overview
+
+### Phase 1: Function Analysis & Complexity Assessment
+Before any test generation, analyze the target function:
+
+**Complexity Metrics:**
+- **Branches:** Count if/else, switch cases, ternary operators
+- **Loops:** Count for, while, forEach iterations  
+- **Returns:** Count early returns and exit paths
+- **Nesting:** Count nested conditions and loops
+- **Dependencies:** External APIs, database calls, file operations
+
+**Complexity Calculation:**
+```
+Complexity = Base(1) + Branches + Loops + Returns + (Nesting × 2) + (Dependencies × 3)
+```
+
+### Phase 2: Interactive Approval Workflow
+
+#### Step 1: Function Selection & Analysis
+```
+🔍 FUNCTION ANALYSIS
+Target: [functionName]
+File: [filePath]
+Complexity Score: [score]
+Type: [function/component/class]
+
+Analysis:
+- Branches: [count]
+- Loops: [count] 
+- Returns: [count]
+- Nesting Level: [level]
+- Dependencies: [list]
+
+Options:
+1. ✅ Proceed with testing
+2. 🔧 Refactor first (recommended if complexity > 8)
+3. ⏭️ Skip this function
+4. 📋 Show detailed analysis
+
+Your choice: [1/2/3/4]
+```
+
+#### Step 2: Test Strategy Selection
+```
+📋 TEST STRATEGY SELECTION
+Function: [functionName]
+
+Available Strategies:
+1. 🎯 Unit Tests (isolated function testing)
+2. 🔗 Integration Tests (with dependencies)
+3. 🎭 Component Tests (UI components)
+4. 🧪 E2E Tests (full user flows)
+5. 🔍 Custom Strategy
+
+Recommended: [strategy based on function type]
+
+Your choice: [1/2/3/4/5]
+```
+
+#### Step 3: Test Plan Generation & Approval
+```
+📋 TEST PLAN: [functionName]
+Strategy: [selected strategy]
+Complexity: [score]
+
+Planned Test Cases:
+□ Happy Path Scenarios:
+  - [scenario 1]
+  - [scenario 2]
+
+□ Edge Cases:
+  - [edge case 1]
+  - [edge case 2]
+
+□ Error Conditions:
+  - [error scenario 1]
+  - [error scenario 2]
+
+□ Boundary Values:
+  - [boundary 1]
+  - [boundary 2]
+
+□ Mock Requirements:
+  - [dependency 1]
+  - [dependency 2]
+
+Coverage Targets:
+- Line Coverage: [target]%
+- Branch Coverage: [target]%
+- Function Coverage: 100%
+
+Estimated Tests: [number]
+Estimated Time: [time]
+
+Options:
+✅ Approve and generate tests
+📝 Modify test plan
+🔄 Regenerate plan
+❌ Cancel
+
+Your choice: [A/M/R/C]
+```
+
+#### Step 4: Test Implementation
+Only after plan approval, generate the actual test code with:
+
+```
+🧪 GENERATING TESTS
+Function: [functionName]
+Approved Plan: [plan summary]
+
+Generating [number] test cases...
+✅ Test 1: [test name]
+✅ Test 2: [test name]
+...
+
+📊 Coverage Summary:
+- Lines: [coverage]%
+- Branches: [coverage]%
+- Functions: [coverage]%
+
+Options:
+✅ Accept tests
+📝 Modify specific tests
+🔄 Regenerate all tests
+❌ Reject and start over
+
+Your choice: [A/M/R/RO]
+```
+
+### Phase 3: Quality Gates
+
+#### Code Quality Standards
+- Single responsibility per test
+- Clear, descriptive test names using AAA pattern (Arrange, Act, Assert)
+- Comprehensive coverage of all branches
+- Proper mocking of external dependencies
+- No test interdependence
+- Meaningful assertions with clear failure messages
+
+#### Coverage Requirements
+- **Line Coverage:** Minimum 90%, Target 95%
+- **Branch Coverage:** Minimum 85%, Target 90%
+- **Function Coverage:** 100% (all functions tested)
+
+### Phase 4: Test Maintenance
+
+#### Post-Generation Options
+```
+🔧 TEST MAINTENANCE OPTIONS
+Generated: [timestamp]
+
+Options:
+1. 📊 Run tests and show coverage
+2. 🔍 Review test quality
+3. 📝 Add additional test cases
+4. 🧹 Refactor existing tests
+5. ✅ Complete and save
+
+Your choice: [1/2/3/4/5]
+```
+
+## Implementation Guidelines
+
+### For Different Function Types
+
+#### Pure Functions
+- Focus on input/output testing
+- Test edge cases and boundary values
+- Minimal mocking required
+
+#### Component Functions
+- Test rendering and user interactions
+- Mock external dependencies
+- Test accessibility features
+
+#### API Functions
+- Mock external API calls
+- Test error handling
+- Test timeout scenarios
+
+#### Utility Functions
+- Comprehensive edge case testing
+- Performance testing for complex operations
+- Memory leak testing if applicable
+
+### Testing Framework Integration
+- Use Vitest for unit and integration tests
+- Use Testing Library for component tests
+- Use Playwright for E2E tests
+- Configure proper TypeScript support
+
+### Best Practices
+- Always wait for user approval before proceeding
+- Provide clear explanations for recommendations
+- Allow customization at each step
+- Maintain consistent test structure
+- Include helpful comments in generated tests
+
+## Error Handling
+- Graceful handling of parsing errors
+- Clear error messages for failed test generation
+- Fallback options when analysis fails
+- Recovery mechanisms for interrupted workflows
