@@ -1,0 +1,66 @@
+---
+description: 
+globs: *.ts
+alwaysApply: false
+---
+
+# Test Generation Rule
+
+## Rule: Generate actual test code after approval
+
+After test preview approval ('y'):
+
+1. **Use approved structure**
+2. **Generate TypeScript test code**
+3. **Follow testing standards**
+4. **Include proper imports**
+
+## Standards:
+
+- Vitest framework
+- TypeScript strict mode
+- AAA pattern (Arrange, Act, Assert)
+- Descriptive test names
+- Proper mocking for dependencies
+
+## Template Structure:
+
+```typescript
+import { describe, it, expect, vi } from 'vitest';
+import { functionName } from './path';
+
+describe('functionName', () => {
+  describe('domain logic', () => {
+    it('should [specific behavior]', () => {
+      // Arrange
+      const input = value;
+
+      // Act
+      const result = functionName(input);
+
+      // Assert
+      expect(result).toBe(expected);
+    });
+  });
+
+  describe('logic paths', () => {
+    // Branch/loop tests
+  });
+
+  describe('edge cases', () => {
+    // Edge case tests
+  });
+
+  describe('boundary conditions', () => {
+    // Boundary tests
+  });
+});
+```
+
+## Mock Requirements:
+
+- External dependencies
+- API calls
+- File system operations
+
+Generate complete, runnable test.
