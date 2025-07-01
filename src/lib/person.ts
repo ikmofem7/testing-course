@@ -5,10 +5,16 @@ type PersonOptions = {
   age?: string | number;
 };
 
-const parseFullName = (fullName: string): PersonOptions => {
+export const parseFullName = (fullName: string): PersonOptions => {
   if (!fullName.length) throw new Error('fullName cannot be an empty string.');
 
-  const [firstName, ...rest] = fullName.split(' ');
+  const parts = fullName.split(' ').filter((part) => part.length > 0);
+
+  if (parts.length === 0) {
+    return { firstName: '', middleName: undefined, lastName: undefined };
+  }
+
+  const [firstName, ...rest] = parts;
   const lastName = rest.pop();
   let middleName: string | undefined;
 

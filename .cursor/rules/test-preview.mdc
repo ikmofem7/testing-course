@@ -1,0 +1,45 @@
+---
+description: 
+globs: *.ts
+alwaysApply: false
+---
+# Test Preview Rule - Categorized
+
+## Rule: Generate categorized test structure
+
+After function context confirmation:
+
+1. **Extract test dimensions**
+2. **Show categorized preview**
+3. **Wait for approval**
+4. **Generate tests**
+
+## Output Format:
+
+```
+📋 TEST PREVIEW: [functionName]
+
+describe('[functionName]')
+├── describe('domain logic')
+│   └── it('[primary business action]')
+├── describe('logic paths')
+│   ├── it('[branch/loop behavior]')
+│   └── it('[conditional handling]')
+├── describe('edge cases')
+│   ├── it('[zero/null handling]')
+│   └── it('[type boundary]')
+└── describe('boundary conditions')
+    ├── it('[min/max values]')
+    └── it('[overflow/underflow]')
+
+Dependencies to mock: [list]
+Approve? [y/n]
+```
+
+## Category Mapping:
+- **Domain:** Core business logic
+- **Logic Paths:** Branches, loops, conditions
+- **Edge Cases:** Invalid inputs, nulls, empties
+- **Boundary:** Min/max, overflow, limits
+
+Generate code only after 'y'

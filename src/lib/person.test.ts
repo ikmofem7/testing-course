@@ -1,5 +1,11 @@
 import { describe, expect, it, test, beforeEach } from 'vitest';
-import { areFriends, createPerson, isFriendOfFriend, Person } from './person';
+import {
+  areFriends,
+  createPerson,
+  isFriendOfFriend,
+  Person,
+  parseFullName,
+} from './person';
 
 const names = [
   {
@@ -149,4 +155,166 @@ describe('isFriendOfFriend', () => {
       expect(isFriendOfFriend(source, target)).toBe(knowEachOther);
     },
   );
+});
+
+describe('parseFullName', () => {
+  describe('domain logic', () => {
+    it('parses three-part name correctly', () => {
+      const result = parseFullName('John Michael Doe');
+      expect(result).toEqual({
+        firstName: 'John',
+        middleName: 'Michael',
+        lastName: 'Doe',
+      });
+    });
+
+    it('parses two-part name correctly', () => {
+      const result = parseFullName('Jane Smith');
+      expect(result).toEqual({
+        firstName: 'Jane',
+        middleName: undefined,
+        lastName: 'Smith',
+      });
+    });
+  });
+
+  describe('logic paths', () => {
+    it('handles single name (first name only)', () => {
+      const result = parseFullName('Alice');
+      expect(result).toEqual({
+        firstName: 'Alice',
+        middleName: undefined,
+        lastName: undefined,
+      });
+    });
+
+    it('handles multiple middle names', () => {
+      const result = parseFullName('John Michael James Doe');
+      expect(result).toEqual({
+        firstName: 'John',
+        middleName: 'Michael James',
+        lastName: 'Doe',
+      });
+    });
+
+    it('handles names with extra spaces', () => {
+      const result = parseFullName('  John   Doe  ');
+      expect(result).toEqual({
+        firstName: 'John',
+        middleName: undefined,
+        lastName: 'Doe',
+      });
+    });
+  });
+
+  describe('edge cases', () => {
+    it('throws error for empty string', () => {
+      expect(() => parseFullName('')).toThrow(
+        'fullName cannot be an empty string.',
+      );
+    });
+
+    it('handles whitespace-only string', () => {
+      const result = parseFullName('   ');
+      expect(result).toEqual({
+        firstName: '',
+        middleName: undefined,
+        lastName: undefined,
+      });
+    });
+
+    it('handles single character names', () => {
+      const result = parseFullName('A');
+      expect(result).toEqual({
+        firstName: 'A',
+        middleName: undefined,
+        lastName: undefined,
+      });
+    });
+  });
+
+  describe('boundary conditions', () => {
+    it('handles very long names', () => {
+      const longName =
+        'John Michael James Robert William David Richard Joseph Thomas Christopher Daniel Paul Mark Donald George Kenneth Steven Edward Brian Ronald Anthony Kevin Jason Matthew Gary Timothy Jose Larry Jeffrey Frank Scott Eric Stephen Andrew Raymond Gregory Joshua Jerry Dennis Walter Peter Harold Douglas Henry Carl Arthur Ryan Roger Joe Juan Jack Albert Jonathan Justin Terry Gerald Keith Samuel Willie Ralph Lawrence Nicholas Roy Benjamin Bruce Brandon Adam Harry Fred Wayne Billy Steve Louis Jeremy Aaron Randy Howard Eugene Carlos Russell Bobby Victor Martin Ernest Phillip Todd Jesse Craig Alan Shawn Clarence Sean Philip Chris Johnny Earl Jimmy Antonio Danny Bryan Tony Luis Mike Stanley Leonard Nathan Dale Manuel Rodney Curtis Norman Allen Marvin Vincent Glenn Jeffery Travis Jeff Chad Jacob Lee Melvin Alfred Kyle Francis Bradley Jesus Herbert Frederick Ray Joel Edwin Don Eddie Ricky Troy Randall Barry Alexander Bernard Mario Leroy Francisco Marcus Micheal Theodore Clifford Miguel Jamal Jody Byron Ed Cole Quinn Denny Davis Gavin Emery Emerson Grant Kody Luis Malcolm Solomon Grady Noe Ahmed Samir Darian Pierce Urijah Nehemiah Azariah Malaki Devin Skylar Pierce Armani Hassan Jamison Kyson Sanai Makhi Bodhi Colson Chaim Dominik Hendrix Atticus Zahir Ayaan Dylan Luis Malcolm Solomon Grady Noe Ahmed Samir Darian Pierce Urijah Nehemiah Azariah Malaki Devin Skylar Pierce Armani Hassan Jamison Kyson Sanai Makhi Bodhi Colson Chaim Dominik Hendrix Atticus Zahir Ayaan Dylan';
+      const result = parseFullName(longName);
+      expect(result.firstName).toBe('John');
+      expect(result.lastName).toBe('Dylan');
+      expect(result.middleName).toBeDefined();
+      expect(result.middleName?.length).toBeGreaterThan(100);
+    });
+
+    it('handles names with special characters', () => {
+      const result = parseFullName("Jean-Pierre O'Connor");
+      expect(result).toEqual({
+        firstName: 'Jean-Pierre',
+        middleName: undefined,
+        lastName: "O'Connor",
+      });
+    });
+
+    it('handles names with numbers', () => {
+      const result = parseFullName('John 2nd Smith');
+      expect(result).toEqual({
+        firstName: 'John',
+        middleName: '2nd',
+        lastName: 'Smith',
+      });
+    });
+
+    it('handles names with unicode characters', () => {
+      const result = parseFullName('José María García');
+      expect(result).toEqual({
+        firstName: 'José',
+        middleName: 'María',
+        lastName: 'García',
+      });
+    });
+
+    it('handles names with multiple consecutive spaces', () => {
+      const result = parseFullName('John    Doe');
+      expect(result).toEqual({
+        firstName: 'John',
+        middleName: undefined,
+        lastName: 'Doe',
+      });
+    });
+
+    it('handles names with tabs and newlines', () => {
+      const result = parseFullName('John\tDoe\nSmith');
+      expect(result).toEqual({
+        firstName: 'John\tDoe\nSmith',
+        middleName: undefined,
+        lastName: undefined,
+      });
+    });
+
+    it('handles extremely long single word names', () => {
+      const longWord = 'A'.repeat(1000);
+      const result = parseFullName(longWord);
+      expect(result).toEqual({
+        firstName: longWord,
+        middleName: undefined,
+        lastName: undefined,
+      });
+    });
+
+    it('handles names with punctuation marks', () => {
+      const result = parseFullName('Dr. John Smith, Jr.');
+      expect(result).toEqual({
+        firstName: 'Dr.',
+        middleName: 'John Smith,',
+        lastName: 'Jr.',
+      });
+    });
+
+    it('handles names with emojis', () => {
+      const result = parseFullName('John 🎭 Smith');
+      expect(result).toEqual({
+        firstName: 'John',
+        middleName: '🎭',
+        lastName: 'Smith',
+      });
+    });
+  });
 });

@@ -1,28 +1,107 @@
-import { expect, test } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { getArea } from './get-area';
 
-const examples = [
-  { sides: 3, lengthOfSides: 10, area: 43.3012701892219 },
-  { sides: 4, lengthOfSides: 10, area: 100 },
-  { sides: 5, lengthOfSides: 10, area: 172.047740058897 },
-  { sides: 6, lengthOfSides: 10, area: 259.807621135332 },
-  { sides: 7, lengthOfSides: 10, area: 363.391244400159 },
-  { sides: 8, lengthOfSides: 10, area: 482.842712474619 },
-  { sides: 9, lengthOfSides: 10, area: 618.18241937729 },
-  { sides: 10, lengthOfSides: 10, area: 769.420884293813 },
-  { sides: 3, lengthOfSides: 20, area: 173.205080756888 },
-  { sides: 4, lengthOfSides: 20, area: 400 },
-  { sides: 5, lengthOfSides: 20, area: 688.190960235587 },
-  { sides: 6, lengthOfSides: 20, area: 1039.23048454133 },
-  { sides: 7, lengthOfSides: 20, area: 1453.56497760064 },
-  { sides: 8, lengthOfSides: 20, area: 1931.37084989848 },
-  { sides: 9, lengthOfSides: 20, area: 2472.72967750916 },
-  { sides: 10, lengthOfSides: 20, area: 3077.68353717525 },
-];
+describe('getArea', () => {
+  describe('domain logic', () => {
+    it('calculates area of a square correctly', () => {
+      // Square with 4 sides, each 5 units long
+      const result = getArea(4, 5);
+      expect(result).toBeCloseTo(25, 5); // Area = 5² = 25
+    });
 
-test.each(examples)(
-  'it should correctly calculate the area for a polygon with $sides sides with a length of $lengthOfSides',
-  ({ sides, lengthOfSides, area }) => {
-    expect(getArea(sides, lengthOfSides)).toBeCloseTo(area, 2);
-  },
-);
+    it('calculates area of a triangle correctly', () => {
+      // Equilateral triangle with 3 sides, each 6 units long
+      const result = getArea(3, 6);
+      expect(result).toBeCloseTo(15.588457268119896, 5);
+    });
+
+    it('calculates area of a hexagon correctly', () => {
+      // Regular hexagon with 6 sides, each 4 units long
+      const result = getArea(6, 4);
+      expect(result).toBeCloseTo(41.569219381653056, 5);
+    });
+  });
+
+  describe('logic paths', () => {
+    it('handles different side lengths', () => {
+      const sides = 4; // Square
+      const length1 = 2;
+      const length2 = 8;
+
+      const area1 = getArea(sides, length1);
+      const area2 = getArea(sides, length2);
+
+      expect(area1).toBeCloseTo(4, 5); // 2² = 4
+      expect(area2).toBeCloseTo(64, 5); // 8² = 64
+      expect(area2).toBeGreaterThan(area1);
+    });
+
+    it('handles different number of sides', () => {
+      const sideLength = 5;
+      const triangleArea = getArea(3, sideLength);
+      const squareArea = getArea(4, sideLength);
+      const pentagonArea = getArea(5, sideLength);
+
+      expect(triangleArea).toBeLessThan(squareArea);
+      expect(squareArea).toBeLessThan(pentagonArea);
+    });
+  });
+
+  describe('edge cases', () => {
+    it('handles zero sides (invalid input)', () => {
+      const result = getArea(0, 5);
+      expect(result).toBeNaN();
+    });
+
+    it('handles negative sides (invalid input)', () => {
+      const result = getArea(-3, 5);
+      expect(result).toBeNaN();
+    });
+
+    it('handles zero side length (invalid input)', () => {
+      const result = getArea(4, 0);
+      expect(result).toBe(0);
+    });
+
+    it('handles negative side length (invalid input)', () => {
+      const result = getArea(4, -5);
+      expect(result).toBeNaN();
+    });
+  });
+
+  describe('boundary conditions', () => {
+    it('handles very small side lengths', () => {
+      const result = getArea(4, 0.001);
+      expect(result).toBeCloseTo(0.000001, 10); // (0.001)² = 0.000001
+    });
+
+    it('handles very large side lengths', () => {
+      const result = getArea(4, 1000000);
+      expect(result).toBeCloseTo(1000000000000, 5); // (1000000)² = 10^12
+    });
+
+    it('handles minimum valid sides (3)', () => {
+      const result = getArea(3, 1);
+      expect(result).toBeCloseTo(0.4330127018922193, 5);
+    });
+
+    it('handles very large number of sides (approaches circle)', () => {
+      const sideLength = 1;
+      const triangleArea = getArea(3, sideLength);
+      const squareArea = getArea(4, sideLength);
+      const octagonArea = getArea(8, sideLength);
+      const dodecagonArea = getArea(12, sideLength);
+      const manySidesArea = getArea(100, sideLength);
+
+      // Areas should increase with more sides (for same side length)
+      expect(triangleArea).toBeLessThan(squareArea);
+      expect(squareArea).toBeLessThan(octagonArea);
+      expect(octagonArea).toBeLessThan(dodecagonArea);
+      expect(dodecagonArea).toBeLessThan(manySidesArea);
+
+      // Verify the areas are reasonable positive values
+      expect(triangleArea).toBeGreaterThan(0);
+      expect(manySidesArea).toBeGreaterThan(0);
+    });
+  });
+});

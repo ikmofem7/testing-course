@@ -1,0 +1,43 @@
+---
+description: 
+globs: *.ts
+alwaysApply: false
+---
+# Function Context Analysis Rule
+
+## Rule: Explain function purpose before testing
+
+When analyzing functions for testing:
+
+1. **Read function code**
+2. **Explain what it does in 2-3 sentences**
+3. **Identify key behaviors**
+4. **Proceed to test generation**
+
+## Output Format:
+
+```
+🔍 FUNCTION CONTEXT: [functionName]
+
+Purpose: [2-3 sentence explanation of what function does]
+
+Key Behaviors:
+├── Primary action: [main behavior]
+├── Edge handling: [how it handles edge cases]
+└── Dependencies: [what it relies on]
+
+```
+
+## Example:
+```
+🔍 FUNCTION CONTEXT: multiply
+
+Purpose: Implements multiplication through repeated addition using a while loop. 
+Calls the internal add method for each iteration to build the result.
+
+Key Behaviors:
+├── Primary action: Multiplies by adding first number 'b' times
+├── Edge handling: Returns 0 when b is 0 or negative
+└── Dependencies: Relies on this.add method
+
+```
